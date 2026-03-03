@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>aattica!</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0908;--text:#ece6dd;--muted:#5c564e;--gold:#c8913a;--orange:#e8541a;--teal:#2dffc4;--border:rgba(236,230,221,.07)}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none}
+
+#cur{width:9px;height:9px;background:var(--teal);border-radius:50%;position:fixed;top:0;left:0;z-index:9999;pointer-events:none;mix-blend-mode:screen}
+#ring{width:30px;height:30px;border:1px solid rgba(200,145,58,.45);border-radius:50%;position:fixed;top:0;left:0;z-index:9998;pointer-events:none;transition:all .3s cubic-bezier(.25,.46,.45,.94)}
+
+/* grain overlay */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");pointer-events:none;z-index:8000;opacity:.55}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:600;padding:22px 5vw;display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
+.nav-logo{font-family:'Unbounded',sans-serif;font-weight:900;font-size:.9rem;letter-spacing:.04em;color:#fff}
+.nav-r{display:flex;gap:32px}
+.nav-r a{font-family:'DM Sans',sans-serif;font-weight:400;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s}
+.nav-r a:hover{color:#fff}
+.nav-switch{border:1px solid rgba(255,255,255,.2)!important;padding:6px 14px;border-radius:2px;font-size:.68rem!important;color:rgba(255,255,255,.5)!important}
+.nav-switch:hover{border-color:#fff!important;color:#fff!important}
+
+/* ── HERO ── */
+#hero{height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+
+/* abstract bg blobs */
+.hero-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.hb1{width:60vw;height:60vw;max-width:700px;max-height:700px;background:radial-gradient(circle at 40% 40%,rgba(200,145,58,.18),rgba(180,80,20,.08) 50%,transparent 70%);top:-10%;left:-5%;animation:blobdrift 22s infinite alternate ease-in-out}
+.hb2{width:50vw;height:50vw;max-width:600px;max-height:600px;background:radial-gradient(circle,rgba(45,255,196,.07),transparent 65%);bottom:-15%;right:-5%;animation:blobdrift 28s infinite alternate-reverse ease-in-out}
+.hb3{width:30vw;height:30vw;max-width:400px;max-height:400px;background:radial-gradient(circle,rgba(232,84,26,.1),transparent 65%);top:30%;left:30%;animation:blobdrift 18s 4s infinite alternate ease-in-out}
+@keyframes blobdrift{from{transform:translate(0,0) scale(1)}to{transform:translate(3vw,2vh) scale(1.07)}}
+
+/* big ghost text */
+.hero-ghost{position:absolute;top:50%;left:50%;transform:translate(-50%,-46%);font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(8rem,22vw,20rem);line-height:.88;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px rgba(236,230,221,.055);white-space:nowrap;pointer-events:none;user-select:none;z-index:1}
+
+/* hero content bottom */
+.hero-bottom{position:relative;z-index:10;padding:0 5vw 5vh;display:grid;grid-template-columns:1fr auto;align-items:flex-end;gap:40px}
+.hero-tag{font-family:'DM Sans',sans-serif;font-weight:300;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-tag::before{content:'';display:block;width:26px;height:1px;background:var(--teal)}
+.hero-title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(4.5rem,14vw,13rem);line-height:.88;letter-spacing:-.04em;color:var(--text)}
+.hero-title .bang{color:var(--gold)}
+.hero-title .line2{display:block;color:transparent;-webkit-text-stroke:2px var(--text);opacity:.25}
+.hero-right{text-align:right;padding-bottom:8px}
+.hero-desc{font-size:.88rem;font-style:italic;color:var(--muted);max-width:260px;line-height:1.75;text-align:right;margin-bottom:24px}
+.hero-cta-row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-family:'Unbounded',sans-serif;font-weight:700;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .22s;cursor:none;border:none;border-radius:2px}
+.btn-fill{background:var(--text);color:var(--bg)}
+.btn-fill:hover{background:var(--gold);transform:translateY(-1px)}
+.btn-line{border:1px solid rgba(236,230,221,.2)!important;color:rgba(236,230,221,.5);background:transparent}
+.btn-line:hover{border-color:var(--text)!important;color:var(--text)}
+
+/* ── MARQUEE ── */
+.mq{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;position:relative;z-index:10;background:var(--bg)}
+.mq-track{display:flex;animation:mq 22s linear infinite;width:max-content}
+.mq-track span{font-family:'Unbounded',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 28px;white-space:nowrap}
+.mq-track span.g{color:var(--gold)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── SECTION 001 — TYPE BLOCK ── */
+.type-block{padding:10vw 5vw 8vw;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.tb-num{font-family:'Unbounded',sans-serif;font-weight:900;font-size:.7rem;letter-spacing:.18em;color:var(--muted);margin-bottom:40px;display:flex;align-items:center;gap:16px}
+.tb-num::after{content:'';flex:1;max-width:60px;height:1px;background:var(--border)}
+.tb-main{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(2.8rem,8vw,7.5rem);line-height:.95;letter-spacing:-.03em;position:relative;z-index:2}
+.tb-main .row{display:block}
+.tb-main .row.indent{padding-left:12vw}
+.tb-main .row.stroke{color:transparent;-webkit-text-stroke:1.5px var(--text);opacity:.35}
+.tb-main .row.accent{color:var(--gold)}
+.tb-sub{margin-top:32px;font-size:.88rem;font-style:italic;color:var(--muted);max-width:420px;line-height:1.8;position:relative;z-index:2}
+.tb-bg-num{position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(12rem,28vw,24rem);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(236,230,221,.03);pointer-events:none;user-select:none}
+
+/* blob inside section */
+.tb-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;opacity:1}
+.tb-blob1{width:500px;height:500px;background:radial-gradient(circle,rgba(232,84,26,.09),transparent 65%);right:-100px;top:-100px}
+
+/* ── SECTION 002 — PILLARS ── */
+.pillars-section{border-bottom:1px solid var(--border)}
+.pillar{border-bottom:1px solid var(--border);padding:40px 5vw;display:grid;grid-template-columns:80px 1fr 1fr;gap:40px;align-items:center;transition:background .25s}
+.pillar:last-child{border-bottom:none}
+.pillar:hover{background:rgba(236,230,221,.02)}
+.pillar-idx{font-family:'Unbounded',sans-serif;font-weight:900;font-size:.68rem;letter-spacing:.18em;color:var(--muted)}
+.pillar-title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(1.4rem,3vw,2.4rem);line-height:1;letter-spacing:-.02em}
+.pillar-body{color:var(--muted);font-size:.88rem;line-height:1.75;font-style:italic}
+
+/* ── QUOTE BAND ── */
+.quote-band{background:var(--orange);padding:48px 5vw;overflow:hidden;position:relative}
+.quote-band-inner{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(1.4rem,4vw,3.2rem);line-height:1.15;letter-spacing:-.02em;color:#0a0908;max-width:900px}
+.quote-band-inner em{font-style:normal;opacity:.55}
+.quote-attr{margin-top:20px;font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,9,8,.5)}
+
+/* ── LINKS ── */
+#links{padding:10vw 5vw 12vw;position:relative;overflow:hidden}
+.links-header{margin-bottom:60px}
+.lh-eyebrow{font-family:'DM Sans',sans-serif;font-weight:300;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lh-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--teal)}
+.lh-title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,4rem);line-height:.95;letter-spacing:-.03em}
+.platform-list{display:flex;flex-direction:column}
+.platform-row{display:flex;align-items:center;justify-content:space-between;padding:28px 0;border-top:1px solid var(--border);text-decoration:none;color:var(--text);transition:all .2s;cursor:none;gap:20px}
+.platform-row:last-child{border-bottom:1px solid var(--border)}
+.platform-row:hover .pr-name{color:var(--gold)}
+.platform-row:hover .pr-arrow{transform:translate(4px,-4px);color:var(--gold)}
+.pr-left{display:flex;align-items:center;gap:24px}
+.pr-idx{font-family:'Unbounded',sans-serif;font-weight:900;font-size:.65rem;color:var(--muted);letter-spacing:.1em;width:28px}
+.pr-icon{font-size:1.1rem}
+.pr-name{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(1.1rem,2.5vw,1.8rem);letter-spacing:-.01em;transition:color .2s}
+.pr-sub{color:var(--muted);font-size:.8rem;font-style:italic}
+.pr-arrow{font-size:1.1rem;color:var(--muted);transition:all .2s}
+
+/* links blob */
+.links-blob{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(110px);background:radial-gradient(circle,rgba(200,145,58,.08),transparent 65%);bottom:-100px;right:-100px;pointer-events:none}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:28px 5vw;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:10}
+.fl{font-family:'Unbounded',sans-serif;font-weight:900;font-size:.85rem;color:var(--text)}
+.fr{font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s ease}
+.reveal.on{opacity:1;transform:translateY(0)}
+.reveal-up{opacity:0;transform:translateY(50px);transition:opacity .9s ease,transform .9s ease}
+.reveal-up.on{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  .hero-bottom{grid-template-columns:1fr}
+  .hero-right{text-align:left}
+  .hero-desc{text-align:left;max-width:100%}
+  .hero-cta-row{justify-content:flex-start}
+  .pillar{grid-template-columns:50px 1fr;gap:20px}
+  .pillar-body{display:none}
+  .nav-r{display:none}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">aattica!</div>
+  <div class="nav-r">
+    <a href="#about">Артист</a>
+    <a href="#links">Слушать</a>
+    <a href="https://autocatt.ru" class="nav-switch">Portfolio ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blob hb1"></div>
+  <div class="hero-blob hb2"></div>
+  <div class="hero-blob hb3"></div>
+  <div class="hero-ghost">AAT</div>
+  <div class="hero-bottom">
+    <div>
+      <div class="hero-tag">живая электроника — 2025</div>
+      <h1 class="hero-title">
+        aat<span class="bang">tica!</span>
+        <span class="line2">MUSIC</span>
+      </h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-desc">Complextro-архитектура, живые инструменты — и тексты, которые берут простое и делают его странным.</p>
+      <div class="hero-cta-row">
+        <a href="#links" class="btn btn-fill">Слушать →</a>
+        <a href="#about" class="btn btn-line">Об артисте</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mq-track" id="mtrack">
+    <span>aattica!</span><span class="g">✦</span>
+    <span>Живая электроника</span><span class="g">✦</span>
+    <span>Complextro</span><span class="g">✦</span>
+    <span>Живые инструменты</span><span class="g">✦</span>
+    <span>Скоро релиз</span><span class="g">✦</span>
+    <span>Метафорические тексты</span><span class="g">✦</span>
+    <span>aattica!</span><span class="g">✦</span>
+    <span>Живая электроника</span><span class="g">✦</span>
+    <span>Complextro</span><span class="g">✦</span>
+    <span>Живые инструменты</span><span class="g">✦</span>
+    <span>Скоро релиз</span><span class="g">✦</span>
+    <span>Метафорические тексты</span><span class="g">✦</span>
+  </div>
+</div>
+
+<!-- TYPE BLOCK -->
+<section class="type-block reveal-up" id="about">
+  <div class="tb-blob tb-blob1"></div>
+  <div class="tb-num">001 — об артисте</div>
+  <div class="tb-main">
+    <span class="row">ЖИВОЕ</span>
+    <span class="row indent stroke">MEETS</span>
+    <span class="row accent">ЭЛЕКТРОННОЕ</span>
+  </div>
+  <p class="tb-sub">Там где complextro встречает живые инструменты. Где синтезаторы и живой голос существуют в одном пространстве. Вдохновение — Конец Солнечных Дней.</p>
+  <div class="tb-bg-num">01</div>
+</section>
+
+<!-- PILLARS -->
+<section class="pillars-section" id="sound">
+  <div class="pillar reveal">
+    <div class="pillar-idx">001</div>
+    <div class="pillar-title">Complextro-ядро</div>
+    <div class="pillar-body">Плотные электронные текстуры, нарезанные синтезаторы, сложные ритмические рисунки — каркас который держит всё вместе.</div>
+  </div>
+  <div class="pillar reveal">
+    <div class="pillar-idx">002</div>
+    <div class="pillar-title">Живые инструменты</div>
+    <div class="pillar-body">Настоящее звучание в куплетах — там где нужна теплота. Электроника нарастает как волна.</div>
+  </div>
+  <div class="pillar reveal">
+    <div class="pillar-idx">003</div>
+    <div class="pillar-title">Метафорический текст</div>
+    <div class="pillar-body">Каждый трек смотрит на простой жизненный вопрос через непривычный угол зрения. Слова — не декорация.</div>
+  </div>
+</section>
+
+<!-- QUOTE BAND -->
+<div class="quote-band reveal">
+  <div class="quote-band-inner">
+    Иногда нужно сказать обычное — <em>но так, чтобы это прозвучало впервые.</em>
+  </div>
+  <div class="quote-attr">aattica! — 2025</div>
+</div>
+
+<!-- LINKS -->
+<section id="links">
+  <div class="links-blob"></div>
+  <div class="links-header reveal">
+    <div class="lh-eyebrow">платформы</div>
+    <div class="lh-title">СЛУШАТЬ<br/>И СЛЕДИТЬ</div>
+  </div>
+  <div class="platform-list reveal">
+    <a href="https://vk.com/aattica" class="platform-row" target="_blank">
+      <div class="pr-left">
+        <div class="pr-idx">01</div>
+        <div class="pr-icon">🎵</div>
+        <div>
+          <div class="pr-name">ВКонтакте</div>
+          <div class="pr-sub">Музыка, обновления, новости о релизах</div>
+        </div>
+      </div>
+      <div class="pr-arrow">↗</div>
+    </a>
+    <a href="https://t.me/aattica" class="platform-row" target="_blank">
+      <div class="pr-left">
+        <div class="pr-idx">02</div>
+        <div class="pr-icon">✈️</div>
+        <div>
+          <div class="pr-name">Telegram</div>
+          <div class="pr-sub">Закулисье, мысли, дата первого релиза</div>
+        </div>
+      </div>
+      <div class="pr-arrow">↗</div>
+    </a>
+    <a href="#" class="platform-row" target="_blank">
+      <div class="pr-left">
+        <div class="pr-idx">03</div>
+        <div class="pr-icon">🎧</div>
+        <div>
+          <div class="pr-name">Spotify / Apple Music</div>
+          <div class="pr-sub">Скоро — первые треки</div>
+        </div>
+      </div>
+      <div class="pr-arrow">↗</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">aattica!</div>
+  <div class="fr">© 2025 — живая электроника</div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
+document.addEventListener('mousemove',e=>{
+  cur.style.transform=`translate(${e.clientX-4.5}px,${e.clientY-4.5}px)`;
+  setTimeout(()=>ring.style.transform=`translate(${e.clientX-15}px,${e.clientY-15}px)`,85);
+});
+document.querySelectorAll('.reveal,.reveal-up').forEach(el=>{
+  new IntersectionObserver(([e])=>{if(e.isIntersecting)el.classList.add('on')},{threshold:.07}).observe(el);
+});
+// marquee seamless
+const t=document.getElementById('mtrack');
+t.innerHTML+=t.innerHTML;
+</script>
+</body>
+</html>
